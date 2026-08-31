@@ -291,6 +291,11 @@
 </head>
 <body>
 
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="Katy Perry - Thinking Of You (Lyrics).mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Background Video & Fire Tint Overlay -->
     <video autoplay muted loop class="bg-video">
         <source src="hutao-bg.mp4" type="video/mp4">
@@ -300,11 +305,6 @@
 
     <div class="letter-envelope" id="envelopeBox">
 
-                <!-- Background Music -->
-<audio id="bgMusic" loop>
-    <source src="Katy Perry - Thinking Of You (Lyrics).mp3" type="audio/mpeg">
-</audio>
-        
         <!-- INTERFACE 1: Front Cover -->
         <div id="frontCover" class="view-section active">
             <div class="talisman-tag">your favorite girl's confession?</div>
@@ -356,34 +356,34 @@
         </div>
 
         <!-- LETTER PAGE 3 -->
-<div id="page3" class="view-section">
-    <div class="page-header">
-        <span>Sany's Confession</span>
-        <span>Page 3 of 4</span>
-    </div>
+        <div id="page3" class="view-section">
+            <div class="page-header">
+                <span>Sany's Confession</span>
+                <span>Page 3 of 4</span>
+            </div>
             <p>No words can express how much you made my life better. Ever since we met, I felt safe and assured that someone was there for me—even if it was mostly through a screen. From the times we played The Mimic to the time we actually met, those moments are all important to me. They will always be one of the reasons I smile and why my heart still beats a little faster. I know it's not right, but why do I feel a slight tightness in my chest whenever you mention the girl you miss, and it's not me? Though, I understand. I might sound like I'm keeping you as a backburner, but that's not what I mean or what I'm trying to say. What I'm trying to convey is that, for some reason, you and my current boyfriend are both tied in my heart.</p>
-<div class="button-group" style="justify-content: space-between;">
-        <button class="btn" onclick="switchView('page2')">⬅ Back</button>
-        <button class="btn btn-yes" onclick="switchView('page4')">Next ➔</button>
-    </div>
-</div>
+            <div class="button-group" style="justify-content: space-between;">
+                <button class="btn" onclick="switchView('page2')">⬅ Back</button>
+                <button class="btn btn-yes" onclick="switchView('page4')">Next ➔</button>
+            </div>
+        </div>
 
-<!-- LETTER PAGE 4 -->
-<div id="page4" class="view-section">
-    <div class="page-header">
-        <span>Sany's Confession</span>
-        <span>Page 4 of 4</span>
-    </div>
-    <p>So yes, I know it's wrong of me to send this, but keeping it inside felt worse than just being honest. I just wanted to thank you for setting my standards high and showing me what it means to be treated right. You taught me that love comes in many forms. If our paths ever cross again down the road, I promise I'll cherish and value it so much better than I did before. I still love you—partly as my best friend, and partly as someone who will always hold a piece of my heart from the past.</p>
-    <div class="signature">
-        <div class="sign-off">Love, your favorite girl(?),</div>
-        <div class="name">- sany</div>
-    </div>
-    <div class="button-group" style="justify-content: space-between;">
-        <button class="btn" onclick="switchView('page3')">⬅ Back</button>
-        <button class="btn btn-yes" onclick="switchView('frontCover')">End.</button>
-    </div>
-</div>
+        <!-- LETTER PAGE 4 -->
+        <div id="page4" class="view-section">
+            <div class="page-header">
+                <span>Sany's Confession</span>
+                <span>Page 4 of 4</span>
+            </div>
+            <p>So yes, I know it's wrong of me to send this, but keeping it inside felt worse than just being honest. I just wanted to thank you for setting my standards high and showing me what it means to be treated right. You taught me that love comes in many forms. If our paths ever cross again down the road, I promise I'll cherish and value it so much better than I did before. I still love you—partly as my best friend, and partly as someone who will always hold a piece of my heart from the past.</p>
+            <div class="signature">
+                <div class="sign-off">Love, your favorite girl(?),</div>
+                <div class="name">- sany</div>
+            </div>
+            <div class="button-group" style="justify-content: space-between;">
+                <button class="btn" onclick="switchView('page3')">⬅ Back</button>
+                <button class="btn btn-yes" onclick="switchView('frontCover')">End.</button>
+            </div>
+        </div>
 
     </div>
 
@@ -459,7 +459,7 @@
             }
         });
 
-window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', () => {
             const music = document.getElementById('bgMusic');
             
             // Attempt immediate autoplay on page open
