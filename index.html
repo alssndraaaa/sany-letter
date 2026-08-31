@@ -454,23 +454,16 @@
         // Play audio on first user interaction anywhere on the screen
 const music = document.getElementById('bgMusic');
 
-        function enableSound() {
-            music.muted = false;
-            music.play().catch(() => {});
-            ['mousemove', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
-                document.removeEventListener(evt, enableSound);
-            });
+        function startAudio() {
+            music.play().then(() => {
+                ['pointerdown', 'keydown'].forEach(evt => {
+                    document.removeEventListener(evt, startAudio);
+                });
+            }).catch(() => {});
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            // Start muted immediately (bypasses browser autoplay restrictions)
-            music.muted = true;
-            music.play().catch(() => {});
-
-            // Unmute on mouse movement, touch, scroll, or keypress
-            ['mousemove', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
-                document.addEventListener(evt, enableSound, { once: true });
-            });
+        ['pointerdown', 'keydown'].forEach(evt => {
+            document.addEventListener(evt, startAudio);
         });
     </script>
 
