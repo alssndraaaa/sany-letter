@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sany's letter</title>
+    <style>
+        /* --- Background Video & Fire Tint --- */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(209, 73, 78, 0.35) 0%, rgba(26, 11, 16, 0.75) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- Base Layout --- */
+        body {
+            color: #3d2c33;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', 'Quicksand', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* --- Floating Envelope Container --- */
+        .letter-envelope {
+            background-color: #fffaf5;
+            width: 100%;
+            max-width: 480px;
+            padding: 32px 30px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55), 0 0 30px rgba(237, 138, 73, 0.35);
+            border: 3px solid #d1494e;
+            border-radius: 30px;
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+            text-align: center;
+            animation: floatCard 4s ease-in-out infinite;
+            transform-origin: center;
+            overflow: hidden;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(0.4deg); }
+        }
+
+        /* --- View States & Smooth Transitions --- */
+        .view-section {
+            display: none;
+            flex-direction: column;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(12px) scale(0.98);
+            transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .view-section.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .view-section.exiting {
+            opacity: 0;
+            transform: translateY(-12px) scale(0.98);
+        }
+
+        /* Center alignment for specific views */
+        #frontCover, #passwordPrompt {
+            text-align: center;
+            align-items: center;
+        }
+
+        /* --- Pulsing Talisman Tag --- */
+        .talisman-tag {
+            background: #d1494e;
+            color: #fff9f5;
+            font-size: 0.88rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(209, 73, 78, 0.4);
+            animation: pulseTag 2.2s ease-in-out infinite;
+        }
+
+        @keyframes pulseTag {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        /* --- Increased Typography Sizes --- */
+        h1 {
+            font-size: 1.7rem;
+            color: #b82d34;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+
+        p {
+            color: #5c454e;
+            font-size: 1.15rem;
+            margin: 0 0 16px 0;
+            line-height: 1.65;
+        }
+
+        .pass-input {
+            font-family: inherit;
+            width: 75%;
+            padding: 10px 16px;
+            font-size: 1.35rem;
+            text-align: center;
+            border: 2px solid #e08287;
+            border-radius: 25px;
+            background-color: #fce8d5;
+            color: #59353e;
+            outline: none;
+            margin: 6px 0 16px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+            letter-spacing: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .pass-input:focus {
+            border-color: #d1494e;
+            background-color: #fff9f5;
+            box-shadow: 0 0 8px rgba(209, 73, 78, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        /* --- Bouncy Interactive Buttons --- */
+        .btn {
+            font-family: inherit;
+            background-color: #fce8d5;
+            color: #59353e;
+            border: 2px solid #e08287;
+            padding: 10px 22px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        background-color 0.2s ease,
+                        box-shadow 0.2s ease;
+            box-shadow: 0 4px 0px #e08287;
+            user-select: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            background-color: #f7d6bc;
+        }
+
+        .btn:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 1px 0px #e08287;
+        }
+
+        .btn-yes {
+            background-color: #d1494e;
+            color: #fff9f5;
+            border-color: #a33237;
+            box-shadow: 0 4px 0px #a33237;
+        }
+
+        .btn-yes:hover {
+            background-color: #e0555a;
+        }
+
+        /* --- Letter Headers & Footers --- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.92rem;
+            color: #b82d34;
+            font-weight: bold;
+            margin-bottom: 8px;
+            border-bottom: 1.5px dashed #f5c4c7;
+            padding-bottom: 6px;
+        }
+
+        .date {
+            text-align: right;
+            color: #b82d34;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .salutation {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #4a2830;
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        .sign-off {
+            color: #7d636b;
+            font-size: 0.95rem;
+        }
+
+        .name {
+            color: #d1494e;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* --- Pop-up Modals --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 11, 16, 0.75);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background-color: #fff9f5;
+            padding: 30px 36px;
+            border: 3px solid #d1494e;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-radius: 26px;
+            text-align: center;
+            max-width: 300px;
+            animation: wiggleModal 0.45s ease;
+        }
+
+        @keyframes wiggleModal {
+            0% { transform: scale(0.6) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.06) rotate(-2deg); }
+            70% { transform: scale(0.97) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .modal-box p {
+            font-size: 1.3rem;
+            color: #b82d34;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Video & Fire Tint Overlay -->
+    <video autoplay muted loop class="bg-video">
+        <source src="hutao-bg.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="letter-envelope" id="envelopeBox">
+        
+        <!-- INTERFACE 1: Front Cover -->
+        <div id="frontCover" class="view-section active">
+            <div class="talisman-tag">your favorite girl's confession?</div>
+            <h1>Surprised? (ᵕ´ ∇ ˋ˶)</h1>
+            <p>Will you open it and see what's inside?</p>
+            <div class="button-group">
+                <button class="btn btn-yes" onclick="switchView('passwordPrompt')">Yes! (˶ᵔ ᵕ ᵔ˶)</button>
+                <button class="btn" onclick="showPopup()">No! (｡ᵕ ◞ _◟)</button>
+            </div>
+        </div>
+
+        <!-- PASSWORD PROMPT INTERFACE -->
+        <div id="passwordPrompt" class="view-section">
+            <div class="talisman-tag">Only For Kris's Eyes!</div>
+            <h1>Enter a 6 Digit Code...</h1>
+            <p>Type your favorite girl's birthday. (˶>⩊<˶)</p>
+            <input type="password" id="passInput" class="pass-input" placeholder="••••••" maxlength="6">
+            <div class="button-group">
+                <button class="btn btn-yes" onclick="checkPassword()">Unlock</button>
+                <button class="btn" onclick="switchView('frontCover')">Back</button>
+            </div>
+        </div>
+
+        <!-- LETTER PAGE 1 -->
+        <div id="page1" class="view-section">
+            <div class="page-header">
+                <span>Sany's Confession</span>
+                <span>Page 1 of 4</span>
+            </div>
+            <div class="date">~ So scared... (╥﹏╥) ~</div>
+            <div class="salutation">Dear Kris,</div>
+            <p>I know this letter might be shocking, and perhaps a bit of a red flag coming from me. I just needed to get these feelings off my chest. It has been 96 days since we stopped being more than friends. To be honest, I miss you. Please don't misunderstand—Alecxander treats me well and loves me deeply, but you still hold a special place in my heart, too.</p>
+            <div class="button-group" style="justify-content: flex-end;">
+                <button class="btn btn-yes" onclick="switchView('page2')">Next ➔</button>
+            </div>
+        </div>
+
+        <!-- LETTER PAGE 2 -->
+        <div id="page2" class="view-section">
+            <div class="page-header">
+                <span>Sany's Confession</span>
+                <span>Page 2 of 4</span>
+            </div>
+            <p>This isn't me trying to cheat on him—no, I just wanted to get this off my mind so I could think about it less. As much as I hate to admit it now that I have a boyfriend, I can't stop thinking about the way you treated me. I've been trying to stop thinking about you, but it's been hard, considering you were the first and only guy I met both online and in real life. When you hung out with my parents, you were such a gentleman and set my standards high. Not only that, but you also made me websites for my birthdays and played Mobile Legends with me when no one else wanted to. You replied fast, and in general, you made me feel seen and loved—both as a best friend and as a past lover. I was not lying when I said you are and will always be my first love.</p>
+            <div class="button-group" style="justify-content: space-between;">
+                <button class="btn" onclick="switchView('page1')">⬅ Back</button>
+                <button class="btn btn-yes" onclick="switchView('page3')">Next ➔</button>
+            </div>
+        </div>
+
+        <!-- LETTER PAGE 3 -->
+<div id="page3" class="view-section">
+    <div class="page-header">
+        <span>Sany's Confession</span>
+        <span>Page 3 of 4</span>
+    </div>
+            <p>No words can express how much you made my life better. Ever since we met, I felt safe and assured that someone was there for me—even if it was mostly through a screen. From the times we played The Mimic to the time we actually met, those moments are all important to me. They will always be one of the reasons I smile and why my heart still beats a little faster. I know it's not right, but why do I feel a slight tightness in my chest whenever you mention the girl you miss, and it's not me? Though, I understand. I might sound like I'm keeping you as a backburner, but that's not what I mean or what I'm trying to say. What I'm trying to convey is that, for some reason, you and my current boyfriend are both tied in my heart.</p>
+<div class="button-group" style="justify-content: space-between;">
+        <button class="btn" onclick="switchView('page2')">⬅ Back</button>
+        <button class="btn btn-yes" onclick="switchView('page4')">Next ➔</button>
+    </div>
+</div>
+
+<!-- LETTER PAGE 4 -->
+<div id="page4" class="view-section">
+    <div class="page-header">
+        <span>Sany's Confession</span>
+        <span>Page 4 of 4</span>
+    </div>
+    <p>So yes, I know it's wrong of me to send this, but keeping it inside felt worse than just being honest. I just wanted to thank you for setting my standards high and showing me what it means to be treated right. You taught me that love comes in many forms. If our paths ever cross again down the road, I promise I'll cherish and value it so much better than I did before. I still love you—partly as my best friend, and partly as someone who will always hold a piece of my heart from the past.</p>
+    <div class="signature">
+        <div class="sign-off">Love, your favorite girl(?),</div>
+        <div class="name">- sany</div>
+    </div>
+    <div class="button-group" style="justify-content: space-between;">
+        <button class="btn" onclick="switchView('page3')">⬅ Back</button>
+        <button class="btn btn-yes" onclick="switchView('frontCover')">End.</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- POP-UP MENU -->
+    <div id="popupModal" class="modal-overlay">
+        <div class="modal-box">
+            <p>Awh, try again! :'(</p>
+            <button class="btn btn-yes" onclick="closePopup()">Okay, fine!  ( •̀ ᴖ •́ )</button>
+        </div>
+    </div>
+
+    <script>
+        let isTransitioning = false;
+
+        function switchView(targetViewId) {
+            if (isTransitioning) return;
+
+            const currentActive = document.querySelector('.view-section.active');
+            const targetView = document.getElementById(targetViewId);
+
+            if (!currentActive || !targetView || currentActive === targetView) return;
+
+            isTransitioning = true;
+
+            currentActive.classList.add('exiting');
+            currentActive.classList.remove('active');
+
+            setTimeout(() => {
+                currentActive.classList.remove('exiting');
+                currentActive.style.display = 'none';
+
+                targetView.style.display = 'flex';
+                void targetView.offsetWidth;
+
+                targetView.classList.add('active');
+
+                if (targetViewId === 'frontCover') {
+                    document.getElementById('passInput').value = '';
+                }
+
+                isTransitioning = false;
+            }, 300);
+        }
+
+        function checkPassword() {
+            const inputVal = document.getElementById('passInput').value.trim();
+            if (inputVal === '071110') {
+                switchView('page1');
+            } else {
+                showPopup();
+            }
+        }
+
+        function showPopup() {
+            const modal = document.getElementById('popupModal');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.classList.add('show');
+        }
+
+        function closePopup() {
+            const modal = document.getElementById('popupModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('passInput').value = '';
+            }, 250);
+        }
+
+        document.getElementById('passInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+
+</body>
+</html>
