@@ -16,11 +16,6 @@
             z-index: -1;
         }
 
-        <!-- Background Music -->
-<audio id="bgMusic" loop>
-    <source src="Katy Perry - Thinking Of You (Lyrics).mp3" type="audio/mpeg">
-</audio>
-
         .video-overlay {
             position: fixed;
             top: 0;
@@ -304,6 +299,11 @@
     <div class="video-overlay"></div>
 
     <div class="letter-envelope" id="envelopeBox">
+
+                <!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="Katy Perry - Thinking Of You (Lyrics).mp3" type="audio/mpeg">
+</audio>
         
         <!-- INTERFACE 1: Front Cover -->
         <div id="frontCover" class="view-section active">
@@ -460,20 +460,20 @@
         });
 
 window.addEventListener('DOMContentLoaded', () => {
-        const music = document.getElementById('bgMusic');
-        
-        // Attempt immediate autoplay on page open
-        const playPromise = music.play();
+            const music = document.getElementById('bgMusic');
+            
+            // Attempt immediate autoplay on page open
+            const playPromise = music.play();
 
-        if (playPromise !== undefined) {
-            playPromise.catch(() => {
-                // If browser blocks initial autoplay, start music on first click anywhere
-                document.addEventListener('click', () => {
-                    music.play();
-                }, { once: true });
-            });
-        }
-    });
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // If browser blocks initial autoplay, start music on first click anywhere
+                    document.addEventListener('click', () => {
+                        music.play();
+                    }, { once: true });
+                });
+            }
+        });
     </script>
 
 </body>
