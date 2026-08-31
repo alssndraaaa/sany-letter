@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sany's letter</title>
     <style>
+        /* --- Base Layout --- */
+        body {
+            /* Sets dark red background immediately so red hue never flashes white/black on refresh */
+            background-color: #1a0b10;
+            color: #3d2c33;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', 'Quicksand', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
         /* --- Background Video & Fire Tint --- */
         .bg-video {
             position: fixed;
@@ -25,20 +41,6 @@
             background: radial-gradient(circle, rgba(209, 73, 78, 0.35) 0%, rgba(26, 11, 16, 0.75) 100%);
             z-index: 0;
             pointer-events: none;
-        }
-
-        /* --- Base Layout --- */
-        body {
-            color: #3d2c33;
-            font-family: 'Comic Sans MS', 'Bubblegum Sans', 'Quicksand', cursive, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-x: hidden;
         }
 
         /* --- Floating Envelope Container --- */
@@ -86,13 +88,11 @@
             transform: translateY(-12px) scale(0.98);
         }
 
-        /* Center alignment for specific views */
         #frontCover, #passwordPrompt {
             text-align: center;
             align-items: center;
         }
 
-        /* --- Pulsing Talisman Tag --- */
         .talisman-tag {
             background: #d1494e;
             color: #fff9f5;
@@ -112,7 +112,6 @@
             50% { transform: scale(1.04); }
         }
 
-        /* --- Increased Typography Sizes --- */
         h1 {
             font-size: 1.7rem;
             color: #b82d34;
@@ -158,7 +157,6 @@
             width: 100%;
         }
 
-        /* --- Bouncy Interactive Buttons --- */
         .btn {
             font-family: inherit;
             background-color: #fce8d5;
@@ -197,7 +195,6 @@
             background-color: #e0555a;
         }
 
-        /* --- Letter Headers & Footers --- */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -241,7 +238,6 @@
             font-weight: bold;
         }
 
-        /* --- Pop-up Modals --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -292,19 +288,18 @@
 <body>
 
     <!-- Background Music -->
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="Katy Perry - Thinking Of You (Lyrics).mp3" type="audio/mpeg">
     </audio>
 
     <!-- Background Video & Fire Tint Overlay -->
-    <video autoplay muted loop class="bg-video">
+    <video autoplay muted loop playsinline preload="auto" class="bg-video">
         <source src="hutao-bg.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
     </video>
     <div class="video-overlay"></div>
 
     <div class="letter-envelope" id="envelopeBox">
-
+        
         <!-- INTERFACE 1: Front Cover -->
         <div id="frontCover" class="view-section active">
             <div class="talisman-tag">your favorite girl's confession?</div>
@@ -328,7 +323,7 @@
             </div>
         </div>
 
-        <!-- LETTER PAGE 1 -->
+        <!-- LETTER PAGES 1-4 -->
         <div id="page1" class="view-section">
             <div class="page-header">
                 <span>Sany's Confession</span>
@@ -342,7 +337,6 @@
             </div>
         </div>
 
-        <!-- LETTER PAGE 2 -->
         <div id="page2" class="view-section">
             <div class="page-header">
                 <span>Sany's Confession</span>
@@ -355,7 +349,6 @@
             </div>
         </div>
 
-        <!-- LETTER PAGE 3 -->
         <div id="page3" class="view-section">
             <div class="page-header">
                 <span>Sany's Confession</span>
@@ -368,7 +361,6 @@
             </div>
         </div>
 
-        <!-- LETTER PAGE 4 -->
         <div id="page4" class="view-section">
             <div class="page-header">
                 <span>Sany's Confession</span>
@@ -459,21 +451,17 @@
             }
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const music = document.getElementById('bgMusic');
-            
-            // Attempt immediate autoplay on page open
-            const playPromise = music.play();
+        // Play audio on first user interaction anywhere on the screen
+        const music = document.getElementById('bgMusic');
 
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // If browser blocks initial autoplay, start music on first click anywhere
-                    document.addEventListener('click', () => {
-                        music.play();
-                    }, { once: true });
-                });
-            }
-        });
+        function startAudio() {
+            music.play().catch(() => {});
+            document.removeEventListener('pointerdown', startAudio);
+            document.removeEventListener('keydown', startAudio);
+        }
+
+        document.addEventListener('pointerdown', startAudio);
+        document.addEventListener('keydown', startAudio);
     </script>
 
 </body>
