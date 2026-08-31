@@ -452,16 +452,26 @@
         });
 
         // Play audio on first user interaction anywhere on the screen
-        const music = document.getElementById('bgMusic');
+const music = document.getElementById('bgMusic');
 
-        function startAudio() {
+        function enableSound() {
+            music.muted = false;
             music.play().catch(() => {});
-            document.removeEventListener('pointerdown', startAudio);
-            document.removeEventListener('keydown', startAudio);
+            ['mousemove', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+                document.removeEventListener(evt, enableSound);
+            });
         }
 
-        document.addEventListener('pointerdown', startAudio);
-        document.addEventListener('keydown', startAudio);
+        window.addEventListener('DOMContentLoaded', () => {
+            // Start muted immediately (bypasses browser autoplay restrictions)
+            music.muted = true;
+            music.play().catch(() => {});
+
+            // Unmute on mouse movement, touch, scroll, or keypress
+            ['mousemove', 'pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+                document.addEventListener(evt, enableSound, { once: true });
+            });
+        });
     </script>
 
 </body>
